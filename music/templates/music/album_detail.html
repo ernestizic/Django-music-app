@@ -1,0 +1,37 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+
+<div id="navbar-section">
+    {% include 'navbar.html' %}
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-5">
+            <h3> List of all songs in an album</h3>
+            <img src="{{album.album_logo.url}}" class="img-fluid" style="height:300px; width:100%;">
+        </div>
+        <div class="col-sm-7" style="padding-top:90px">
+            <p style="font-size:25px">{{album.artist}}</p>
+            <h1>{{album.album_title}}</h1>
+        </div>
+    </div>
+
+    <hr>
+    <div class="song-list">
+        <ul>
+        {% for songs in album.song_set.all %}
+            <a href="{% url 'music:song_detail' songs.id songs.slug %}">
+                <li><img src="{{album.album_logo.url}}" class="img-fluid"> {{songs.song_title}}</li>
+            </a>
+        {% endfor %}
+        </ul>
+    </div>
+
+
+
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+
+<!-- navbar included -->
+<div id="navbar-section">
+    {% include 'navbar.html' %}
+</div>
+
+<!-- Main content begins here -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-5">
+            <h3> Song Detail </h3>
+            <img src="{{song.cover_photo.url}}" class="img-fluid" style="height:380px; width:100%;">
+        </div>
+        <div class="col-sm-7" style="padding-top:90px" id="song-info">
+            <p style="font-size:25px">{{song.artist}}</p>
+            <h1>{{song.song_title}}</h1>
+            <br>
+            <ul>
+                <li><i class="fa fa-play"></i></li>
+
+                <!-- Like -->
+                <li>
+                    <div id="song-like-section">
+                        {% include 'music/song_like_section.html' %}
+                    </div>
+                </li>
+                <!-- Like ends -->
+
+                <li><a href="#comment-div" style="color:black"><i class="fa fa-comment-o"></i></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <hr>
+</div>
+
+<div class="container" id="comment-div">
+    {% include 'music/song_comments.html' %}
+</div>
+
+
+{% endblock %}

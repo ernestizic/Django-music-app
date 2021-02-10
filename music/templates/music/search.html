@@ -1,0 +1,52 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+
+<div id="navbar-section">
+    {% include 'navbar.html' %}
+</div>
+<h3>This is the Search page that shows all contents</h3>
+
+<div class="container">
+    <h4 style="padding-top:30px">All Albums</h4>
+    <div class="row">
+        {% for album in albums %}
+        <div class="col-md-3" id="album-list">
+            <a href="{{ album.get_absolute_url }}">
+                <img src="{{album.album_logo.url}}" class="img-fluid" style="height:225px; width:255px;">
+                <p>{{album.artist}}</p>
+                <h6>{{album.album_title}}</h6>
+                <small>Total songs: {{album.song_set.count}}</small>
+            </a>
+        </div>
+        {% empty %}
+        <div class="container">
+            <h4>No album having search term "{{request.GET.q}}"</h4>
+        </div>
+
+
+        {% endfor %}
+    </div>
+
+    <h4 style="padding-top:30px">All songs</h4>
+     <div class="row">
+
+        {% for song in songs %}
+            <div class="col-md-3">
+                <a href="{% url 'music:song_detail' song.id song.slug %}">
+                    <img src="{{song.cover_photo.url}}" class="img-fluid" style="height:225px; width:255px;"> {{song.artist}} - {{song.song_title}}
+                </a>
+            </div>
+            {% empty %}
+            <div class="container">
+                <h4>No song having search term "{{request.GET.q}}"</h4>
+            </div>
+
+        {% endfor %}
+     </div>
+
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="banner">
+
+</div>
+
+<div id="navbar-section">
+    {% include 'navbar.html' %}
+</div>
+<h3>This is the Index page that shows all Albums</h3>
+
+<div class="container">
+    <div class="row">
+        {% for album in albums %}
+        <div class="col-md-3" id="album-list">
+            <a href="{{ album.get_absolute_url }}">
+                <img src="{{album.album_logo.url}}" class="img-fluid" style="height:225px; width:255px;">
+                <p>{{album.artist}}</p>
+                <h6>{{album.album_title}}</h6>
+                <small>Total songs: {{album.song_set.count}}</small>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+{% endblock %}

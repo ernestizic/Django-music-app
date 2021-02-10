@@ -1,0 +1,132 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home</title>
+
+	<!-- Bootstrap core CSS -->
+  	<link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  	<link href="/static/bootstrap/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+  	<link rel="stylesheet" type="text/css" href="/static/styles.css">
+  	 <!-- jQuery (necessary for the use of jQuery) -->
+    <script src="/static/bootstrap/js/jquery.min.js"></script>
+
+	<script></script>
+</head>
+<body>
+
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
+		 <!--brand logo-->
+    	<a class="navbar-brand" href="{% url 'home' %}">Logo</a>
+
+		<ul class="navbar-nav ml-auto">
+			<li class="nav-item">
+				<form class="form-inline" action="{% url 'music:search' %}">
+					<input class="form-control" type="search" placeholder="Search" name="q" style="border-radius:0; background-color:#fff; color:grey; border:1px solid #fff">
+					<button class="btn" type="submit" style="border-radius:0; background-color:#fff; color:grey; border:1px solid #fff">
+						<i class="fa fa-search"></i>
+					</button>
+				</form>
+			</li>
+		</ul>
+	</nav>
+
+    {% block content %}
+
+    {% endblock %}
+
+
+	<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+	<!--<script type="text/javascript" src="/static/queryscript.js"></script>--> <!-- FOR EXTERNAL JAVASCRIPT -->
+
+	<!-- This Ajax doesn't work on external script for some reasons -->
+	<!-- Script for liking a song -->
+	<script>
+		//ajax and jquery script for like function
+		$(document).ready(function(event){
+			$(document).on('click', '#song-like', function(event){
+				event.preventDefault();
+				var pk = $(this).attr('value');
+				$.ajax({
+					type:'POST',
+					url: '{% url "music:like_song" %}',
+					data: {'id':pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+					dataType: 'json',
+					success: function(response){
+						$('#song-like-section').html(response['form'])
+					},
+					error: function(rs, e){
+						console.log(rs.responseText);
+					},
+				});
+			});
+		});
+
+
+		//script for comment reply toggle visible
+        $(document).ready(function(e){
+            $('.reply-btn').click(function(){
+                $(this).parent().parent().next('.replied-comments').fadeToggle();
+            });
+        });
+
+
+        //ajax script for comment function to prevent the whole page from loading
+        $(document).ready(function(){
+            $(document).on('submit', '.comment-form', function(event){
+                event.preventDefault();
+                console.log($(this).serialize());
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(response){
+                        $('#comment-div').html(response['form']);
+                        $('textarea').val('');
+                        $('.reply-btn').click(function(){
+                            $(this).parent().parent().next('.replied-comments').fadeToggle();
+                            $('textarea').val('');
+                        });
+                    },
+                    error: function(rs, e) {
+                        console.log(rs.responseText);
+                    },
+                });
+            });
+        });
+
+
+        //ajax script for comment replies function to prevent the whole page from loading
+        $(document).ready(function(){
+            $(document).on('submit', '.reply-form', function(event){
+                event.preventDefault();
+                console.log($(this).serialize());
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(response){
+                        $('#comment-div').html(response['form']);
+                        $('textarea').val('');
+                        $('.reply-btn').click(function(){
+                            $(this).parent().parent().next('.replied-comments').fadeToggle();
+                            $('textarea').val('');
+                        });
+                    },
+                    error: function(rs, e) {
+                        console.log(rs.responseText);
+                    },
+                });
+            });
+        });
+
+	</script>
+
+
+</body>
+</html>

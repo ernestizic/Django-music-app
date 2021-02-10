@@ -1,0 +1,19 @@
+
+{% if request.user.is_authenticated %}
+<form action="{% url 'music:like_song' %}" method="post">
+    {% csrf_token %}
+    {% if is_liked %}
+        <!--<i class="fa fa-heart" type="submit" name="song_id" value="{{song.id}}" style="color:red"></i>-->
+        <button type="submit" id="song-like" name="song_id" value="{{song.id}}" class="fa fa-heart" style="color:red;"></button>
+        <br> <small> {{total_likes}} like{{total_likes|pluralize}}</small>
+    {% else %}
+        <!--<i class="fa fa-heart-o" type="submit" name="song_id" value="{{song.id}}"></i>-->
+        <button type="submit" id="song-like" name="song_id" value="{{song.id}}" class="fa fa-heart-o"></button>
+        <br> <small> {{total_likes}} like{{total_likes|pluralize}}</small>
+    {% endif %}
+</form>
+{% else %}
+    <i class="fa fa-thumbs-up"></i>
+    <br> <small style="font-size:14px"> {{total_likes}} like{{total_likes|pluralize}}</small>
+
+{% endif %}

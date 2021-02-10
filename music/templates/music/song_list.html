@@ -1,0 +1,42 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div class="banner" style="background-image: url(/static/images/bg3.jpg);">
+
+</div>
+
+<div id="navbar-section">
+    {% include 'navbar.html' %}
+</div>
+<h3>This page shows a list of all the songs</h3>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-sm-8">
+            <div class="list-group list-group-flush" id="song-list">
+            {% for song in song_list %}
+                <a href="{% url 'music:song_detail' song.id song.slug %}" class="list-group-item list-group-item-action">
+                    <img src="{{song.cover_photo.url}}" class="img-fluid"> {{song.artist}} - {{song.song_title}}
+                </a>
+            {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <h5> Latest Songs </h5>
+            <hr>
+            <div class="list-group list-group-flush" id="song-list">
+                {% for latest in latest_songs %}
+                    <a href="{% url 'music:song_detail' latest.id latest.slug %}" class="list-group-item list-group-item-action">
+                        <img src="{{latest.cover_photo.url}}" class="img-fluid"> {{latest.artist}} - {{latest.song_title}}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock %}

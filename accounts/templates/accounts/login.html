@@ -1,0 +1,41 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+    <form action="{% url 'accounts:login_view' %}" method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <!--This is used during redirect after login when you want to access a page that cant be accessed without logging in-->
+        {% if request.GET.next %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
+        {% endif %}
+        <!--end here-->
+
+        <!--Error message in login page -->
+        {% if messages %}
+            <div>
+                {% for message in messages  %}
+                    <div class="alert alert-{{message.tags}}">
+                        {{message|safe}}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <small>
+            <a href="{% url 'accounts:signup_view' %}"> Register </a> |
+            <a href="{% url 'password_reset' %}">forget password?</a>
+        </small>
+        <br>
+
+        <input type="submit" value="Login">
+        <p>-- OR --</p>
+        <a href="{% url 'social:begin' 'github' %}">
+            <button type="button" name="button" class="btn btn-primary">Github</button>
+        </a>
+        <a href="{% url 'social:begin' 'google-oauth2' %}">
+            <button type="button" name="button" class="btn btn-danger">Google+</button>
+        </a>
+
+
+
+    </form>
+{% endblock %}
